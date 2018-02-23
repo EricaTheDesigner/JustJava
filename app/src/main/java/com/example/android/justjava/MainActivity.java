@@ -22,7 +22,7 @@ import java.text.NumberFormat;
  */
 public class MainActivity extends AppCompatActivity {
 
-    int quantity = 2;
+    int quantity = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +34,33 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int price = quantity * 5;
-        String priceMessage = "Total: $" + price + "\nThank you!";
-        displayMessage(priceMessage);
+//        int price = calculatePrice();
+//        String priceMessage = "Total: $" + price + "\nThank you!";
+//        displayMessage(priceMessage);
 
-        calculatePrice(quantity, 10);
+        String priceMessage = createOrderSummary();
+        displayMessage(priceMessage);
     }
 
- /**
+    /**
+     * This method adds extra details to the order
+     */
+    public String createOrderSummary(){
+     int price = calculatePrice();
+     String longMessage = "Name: Charlie"
+             + "\nQuantity: " + quantity
+             + "\nTotal: $" + price
+             + "\nThank you!";
+     return longMessage;
+    }
+
+    /**
  * Calculates the price of the order.
-            *
-            * @param quantity is the number of cups of coffee ordered
+  * @return total price
  */
-    private void calculatePrice(int quantity, int cost) {
+    private int calculatePrice() {
         int price = quantity * 5;
+        return price;
     }
 
     /**

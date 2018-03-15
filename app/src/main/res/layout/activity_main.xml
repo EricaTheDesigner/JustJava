@@ -15,6 +15,14 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp">
 
+        <EditText
+            android:id="@+id/name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="What's your name?"
+            android:inputType="textPersonName"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

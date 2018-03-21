@@ -16,13 +16,14 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This app displays an order form to order coffee.
  */
 public class MainActivity extends AppCompatActivity {
 
-    int quantity = 2;
+    int quantity = 1;
     boolean hasWhip;
     boolean hasChocolate;
     String name;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         EditText nameEditText = (EditText) findViewById(R.id.name_view);
         String name = nameEditText.getText().toString();
 
-        int price = calculatePrice();
+        int price = calculatePrice(hasWhip, hasChocolate);
 //        String priceMessage = "Total: $" + price + "\nThank you!";
 //        displayMessage(priceMessage);
 
@@ -86,9 +87,19 @@ public class MainActivity extends AppCompatActivity {
  * Calculates the price of the order.
   * @return total price
  */
-    private int calculatePrice() {
-        int price = quantity * 5;
-        return price;
+    private int calculatePrice(boolean addWhippedCream, boolean addChocolate) {
+        int baseprice = 5;
+
+
+        if (addWhippedCream){
+            baseprice = baseprice + 1;
+        }
+
+        if (addChocolate){
+            baseprice = baseprice + 2;
+        }
+
+        return quantity * baseprice;
     }
 
     /**
@@ -104,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
      * This method increases the quantity
      */
     public void increment(View view) {
+        if(quantity >=100){
+            /*
+            Use the return keyword to exit from the method - stop the code
+             */
+            Toast.makeText(getBaseContext(), "That's too many!!!",
+            Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         quantity = quantity + 1;
         displayQuantity(quantity);
     }
@@ -112,6 +132,15 @@ public class MainActivity extends AppCompatActivity {
      * This method decreases the quantity
      */
     public void decrement(View view) {
+        if(quantity == 1){
+            /*
+            Use the return keyword to exit from the method - stop the code
+             */
+            Toast.makeText(getBaseContext(), "At least buy one!!",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         quantity = quantity - 1;
         displayQuantity(quantity);
     }

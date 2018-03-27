@@ -10,6 +10,8 @@ package com.example.android.justjava;
 
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -39,27 +41,32 @@ public class MainActivity extends AppCompatActivity {
      */
     public void submitOrder(View view) {
 
+        //Find out if the user wants whipped cream
         CheckBox whippedCheckBox = (CheckBox) findViewById(R.id.whipped_cream);
         boolean hasWhip = whippedCheckBox.isChecked();
 
-        /**
-         * Retrieves status of CheckBox
-         */
+
+        // Retrieves status of CheckBox
         CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate);
         boolean hasChocolate = chocolateCheckBox.isChecked();
 
-        /**
-         * Retrieves Name Entry given in EditText view
-         */
+        // Retrieves Name Entry given in EditText view
         EditText nameEditText = (EditText) findViewById(R.id.name_view);
         String name = nameEditText.getText().toString();
 
         int price = calculatePrice(hasWhip, hasChocolate);
-//        String priceMessage = "Total: $" + price + "\nThank you!";
-//        displayMessage(priceMessage);
-
+        //priceMessage is the entire message and order summary
         String priceMessage = createOrderSummary(price, hasWhip, hasChocolate, name);
-        displayMessage(priceMessage);
+
+        // Send order to email app
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Just Java order for " + name);
+        intent.putExtra(Intent.EXTRA_TEXT, priceMessage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+
     }
 
     /**
@@ -143,14 +150,6 @@ public class MainActivity extends AppCompatActivity {
 
         quantity = quantity - 1;
         displayQuantity(quantity);
-    }
-
-    /**
-     * This method displays the given text on the screen.
-     */
-    private void displayMessage(String message) {
-        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
-        orderSummaryTextView.setText(message);
     }
 
 }
